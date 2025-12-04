@@ -42,10 +42,10 @@ export default function Navbar() {
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-        {/* Logo with white background container for better visibility */}
+        {/* Logo */}
         <div className="flex items-center gap-2 relative z-50">
-          <div className="p-2 transition-transform hover:scale-105">
-            <img src={logo} alt="عمارية العهود" className="h-24 w-auto object-contain" />
+          <div className="bg-white/90 rounded-lg p-2 shadow-md backdrop-blur-sm hover:bg-white transition-colors">
+            <img src={logo} alt="عمارية العهود" className="h-14 w-auto object-contain" />
           </div>
         </div>
 
