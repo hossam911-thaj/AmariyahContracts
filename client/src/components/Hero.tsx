@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import heroBg from "@assets/stock_images/modern_construction__24db5f4a.jpg";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Hero() {
+  const { t, dir } = useLanguage();
+
   return (
     <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Background Image with Overlay */}
@@ -18,14 +21,14 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="container relative z-20 px-4 text-center md:text-right flex flex-col items-center md:items-start gap-6 max-w-5xl mx-auto">
+      <div className={`container relative z-20 px-4 text-center ${dir === 'rtl' ? 'md:text-right items-center md:items-start' : 'md:text-left items-center md:items-start'} flex flex-col gap-6 max-w-5xl mx-auto`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           <span className="inline-block px-4 py-1.5 mb-4 border border-primary/30 bg-primary/10 text-primary rounded-full text-sm font-bold tracking-wider backdrop-blur-sm">
-            رؤية المستقبل، نبنيها اليوم
+            {t('hero_badge')}
           </span>
         </motion.div>
 
@@ -35,10 +38,10 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
         >
-          عمارية العهود <span className="text-primary">التجارية</span>
+          {t('hero_title_1')} <span className="text-primary">{t('hero_title_highlight')}</span>
           <br />
           <span className="text-2xl md:text-4xl lg:text-5xl font-light text-gray-200 mt-2 block">
-            شريكك الموثوق في عالم المقاولات
+            {t('hero_subtitle')}
           </span>
         </motion.h1>
 
@@ -46,10 +49,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-gray-300 text-lg md:text-xl max-w-2xl md:text-right leading-relaxed"
+          className={`text-gray-300 text-lg md:text-xl max-w-2xl leading-relaxed ${dir === 'rtl' ? 'md:text-right' : 'md:text-left'}`}
         >
-          نقدم حلولاً متكاملة في مجال البناء والتشييد بأعلى معايير الجودة والسلامة.
-          نحول رؤيتكم إلى واقع ملموس بأيدي أمهر المهندسين والعمال.
+          {t('hero_desc')}
         </motion.p>
 
         <motion.div
@@ -59,10 +61,10 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 mt-8 w-full md:w-auto"
         >
           <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 px-8 font-bold w-full sm:w-auto">
-            اطلب عرض سعر
+            {t('hero_btn_quote')}
           </Button>
           <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 text-lg h-14 px-8 font-bold w-full sm:w-auto">
-            تصفح مشاريعنا
+            {t('hero_btn_projects')}
           </Button>
         </motion.div>
       </div>

@@ -6,10 +6,12 @@ import Team from "@/components/Team";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -25,19 +27,19 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div className="space-y-2">
                 <h3 className="text-4xl md:text-5xl font-bold text-black">+15</h3>
-                <p className="text-black/80 font-medium text-lg">سنة خبرة</p>
+                <p className="text-black/80 font-medium text-lg">{t('stats_exp')}</p>
               </div>
               <div className="space-y-2">
                 <h3 className="text-4xl md:text-5xl font-bold text-black">+200</h3>
-                <p className="text-black/80 font-medium text-lg">مشروع مكتمل</p>
+                <p className="text-black/80 font-medium text-lg">{t('stats_projects')}</p>
               </div>
               <div className="space-y-2">
                 <h3 className="text-4xl md:text-5xl font-bold text-black">+50</h3>
-                <p className="text-black/80 font-medium text-lg">مهندس خبير</p>
+                <p className="text-black/80 font-medium text-lg">{t('stats_engineers')}</p>
               </div>
               <div className="space-y-2">
                 <h3 className="text-4xl md:text-5xl font-bold text-black">100%</h3>
-                <p className="text-black/80 font-medium text-lg">رضا العملاء</p>
+                <p className="text-black/80 font-medium text-lg">{t('stats_satisfaction')}</p>
               </div>
             </div>
           </div>
@@ -55,7 +57,7 @@ export default function Home() {
               viewport={{ once: true }}
               className="text-3xl md:text-5xl font-bold text-white leading-tight max-w-4xl mx-auto font-serif"
             >
-              "الجودة ليست فعلاً، بل هي عادة. نحن نبني الثقة قبل البناء"
+              {t('quote_text')}
             </motion.blockquote>
           </div>
         </section>

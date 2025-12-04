@@ -3,17 +3,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Contact() {
+  const { t } = useLanguage();
+
   return (
     <section id="contact" className="py-20 bg-muted/10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Info */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">تواصل معنا</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">{t('contact_title')}</h2>
             <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
-              نحن هنا للإجابة على استفساراتكم ومناقشة مشاريعكم القادمة. لا تتردد في التواصل معنا للحصول على استشارة مجانية.
+              {t('contact_desc')}
             </p>
 
             <div className="grid gap-6">
@@ -22,8 +25,8 @@ export default function Contact() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-1">الموقع</h3>
-                  <p className="text-muted-foreground">الرياض، المملكة العربية السعودية<br/>حي العقيق، طريق الملك فهد</p>
+                  <h3 className="text-xl font-bold text-foreground mb-1">{t('contact_location_title')}</h3>
+                  <p className="text-muted-foreground">{t('contact_location_val')}</p>
                 </div>
               </div>
 
@@ -32,7 +35,7 @@ export default function Contact() {
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-1">الهاتف</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-1">{t('contact_phone_title')}</h3>
                   <p className="text-muted-foreground" dir="ltr">+966 50 000 0000</p>
                   <p className="text-muted-foreground" dir="ltr">+966 11 000 0000</p>
                 </div>
@@ -43,7 +46,7 @@ export default function Contact() {
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-1">البريد الإلكتروني</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-1">{t('contact_email_title')}</h3>
                   <p className="text-muted-foreground">info@amariah-alohood.com</p>
                 </div>
               </div>
@@ -53,8 +56,8 @@ export default function Contact() {
                   <Clock className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground mb-1">ساعات العمل</h3>
-                  <p className="text-muted-foreground">الأحد - الخميس: 8:00 ص - 5:00 م</p>
+                  <h3 className="text-xl font-bold text-foreground mb-1">{t('contact_hours_title')}</h3>
+                  <p className="text-muted-foreground">{t('contact_hours_val')}</p>
                 </div>
               </div>
             </div>
@@ -63,31 +66,31 @@ export default function Contact() {
           {/* Contact Form */}
           <Card className="border-border bg-card/50 shadow-xl">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-foreground mb-6">أرسل لنا رسالة</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-6">{t('contact_form_title')}</h3>
               <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">الاسم</label>
-                    <Input placeholder="الاسم الكامل" className="bg-background border-border/50 focus:border-primary" />
+                    <label className="text-sm font-medium text-muted-foreground">{t('contact_label_name')}</label>
+                    <Input placeholder={t('contact_placeholder_name')} className="bg-background border-border/50 focus:border-primary" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">رقم الهاتف</label>
+                    <label className="text-sm font-medium text-muted-foreground">{t('contact_label_phone')}</label>
                     <Input placeholder="050xxxxxxx" className="bg-background border-border/50 focus:border-primary" dir="ltr" />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-muted-foreground">البريد الإلكتروني</label>
+                  <label className="text-sm font-medium text-muted-foreground">{t('contact_label_email')}</label>
                   <Input type="email" placeholder="name@example.com" className="bg-background border-border/50 focus:border-primary" dir="ltr" />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-muted-foreground">الرسالة</label>
-                  <Textarea placeholder="كيف يمكننا مساعدتك؟" className="min-h-[150px] bg-background border-border/50 focus:border-primary" />
+                  <label className="text-sm font-medium text-muted-foreground">{t('contact_label_msg')}</label>
+                  <Textarea placeholder={t('contact_placeholder_msg')} className="min-h-[150px] bg-background border-border/50 focus:border-primary" />
                 </div>
 
                 <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg py-6">
-                  إرسال الرسالة
+                  {t('contact_submit')}
                 </Button>
               </form>
             </CardContent>

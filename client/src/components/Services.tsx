@@ -1,48 +1,51 @@
 import { CheckCircle2, PenTool, HardHat, Building2, Ruler, Truck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { motion } from "framer-motion";
-
-const services = [
-  {
-    title: "المقاولات العامة",
-    description: "تنفيذ كافة أعمال البناء والتشييد للمباني السكنية والتجارية بأعلى المعايير.",
-    icon: Building2,
-  },
-  {
-    title: "التصميم الهندسي",
-    description: "تصاميم معمارية وإنشائية مبتكرة تراعي احتياجات العميل والذوق العام.",
-    icon: PenTool,
-  },
-  {
-    title: "إدارة المشاريع",
-    description: "إشراف كامل على سير العمل لضمان التسليم في الوقت المحدد وبالميزانية المتفق عليها.",
-    icon: Ruler,
-  },
-  {
-    title: "أعمال التشطيبات",
-    description: "تشطيبات داخلية وخارجية فاخرة باستخدام أفضل المواد وأحدث التقنيات.",
-    icon: CheckCircle2,
-  },
-  {
-    title: "الأعمال الكهربائية والميكانيكية",
-    description: "تأسيس وتشغيل كافة الأنظمة الكهربائية والميكانيكية بكفاءة وأمان.",
-    icon: HardHat,
-  },
-  {
-    title: "تأجير المعدات",
-    description: "توفير أحدث المعدات والآليات الثقيلة اللازمة للمشاريع الكبرى.",
-    icon: Truck,
-  },
-];
+import { useLanguage } from "@/lib/language-context";
 
 export default function Services() {
+  const { t } = useLanguage();
+
+  const services = [
+    {
+      title: t('service_contracting'),
+      description: t('service_contracting_desc'),
+      icon: Building2,
+    },
+    {
+      title: t('service_design'),
+      description: t('service_design_desc'),
+      icon: PenTool,
+    },
+    {
+      title: t('service_management'),
+      description: t('service_management_desc'),
+      icon: Ruler,
+    },
+    {
+      title: t('service_finishing'),
+      description: t('service_finishing_desc'),
+      icon: CheckCircle2,
+    },
+    {
+      title: t('service_mep'),
+      description: t('service_mep_desc'),
+      icon: HardHat,
+    },
+    {
+      title: t('service_equipment'),
+      description: t('service_equipment_desc'),
+      icon: Truck,
+    },
+  ];
+
   return (
     <section id="services" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">خدماتنا المتميزة</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{t('services_title')}</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            نقدم مجموعة شاملة من الخدمات الهندسية والمقاولات لتلبية كافة احتياجات مشاريعكم
+            {t('services_desc')}
           </p>
         </div>
 
