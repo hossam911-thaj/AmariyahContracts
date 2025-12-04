@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@assets/عمارية_العهود_(2)_1764834256699.png";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,13 +19,17 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const toggleLanguage = () => {
+    setLanguage(language === "ar" ? "en" : "ar");
+  };
+
   const navLinks = [
-    { name: "الرئيسية", href: "#hero" },
-    { name: "من نحن", href: "#about" },
-    { name: "خدماتنا", href: "#services" },
-    { name: "مشاريعنا", href: "#projects" },
-    { name: "فريق العمل", href: "#team" },
-    { name: "اتصل بنا", href: "#contact" },
+    { name: t.nav.home, href: "#hero" },
+    { name: t.nav.about, href: "#about" },
+    { name: t.nav.services, href: "#services" },
+    { name: t.nav.projects, href: "#projects" },
+    { name: t.nav.team, href: "#team" },
+    { name: t.nav.contact, href: "#contact" },
   ];
 
   return (
@@ -36,9 +42,11 @@ export default function Navbar() {
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <img src={logo} alt="عمارية العهود" className="h-16 w-auto object-contain" />
+        {/* Logo with white background container for better visibility */}
+        <div className="flex items-center gap-2 relative z-50">
+          <div className="bg-white/90 rounded-lg p-2 shadow-md backdrop-blur-sm hover:bg-white transition-colors">
+            <img src={logo} alt="عمارية العهود" className="h-14 w-auto object-contain" />
+          </div>
         </div>
 
         {/* Desktop Nav */}
@@ -55,23 +63,43 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA Button */}
-        <div className="hidden md:block">
+        {/* Actions */}
+        <div className="hidden md:flex items-center gap-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleLanguage}
+            className="rounded-full hover:bg-primary/10 hover:text-primary"
+          >
+            <span className="font-bold text-lg">{language === 'ar' ? 'EN' : 'عربي'}</span>
+          </Button>
+
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2" asChild>
             <a href="#contact">
               <Phone className="h-4 w-4" />
-              تواصل معنا
+              {t.nav.cta}
             </a>
           </Button>
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+           <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={toggleLanguage}
+            className="rounded-full hover:bg-primary/10 hover:text-primary px-2"
+          >
+            <span className="font-bold">{language === 'ar' ? 'EN' : 'عربي'}</span>
+          </Button>
+          
+          <button
+            className="text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -88,7 +116,7 @@ export default function Navbar() {
             </a>
           ))}
           <Button className="w-full mt-4" asChild>
-            <a href="#contact">تواصل معنا</a>
+            <a href="#contact">{t.nav.cta}</a>
           </Button>
         </div>
       )}
