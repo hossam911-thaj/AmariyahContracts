@@ -2,36 +2,33 @@ import { motion } from "framer-motion";
 import engineerImg from "@assets/stock_images/civil_engineer_looki_35a4d2f0.jpg";
 import workerImg from "@assets/stock_images/construction_workers_acf02659.jpg";
 import workerImg2 from "@assets/stock_images/construction_workers_88063721.jpg";
-import { useLanguage } from "@/lib/i18n";
+
+const team = [
+  {
+    name: "م. أحمد العتيبي",
+    role: "مدير المشاريع",
+    image: engineerImg,
+  },
+  {
+    name: "فريق العمل الميداني",
+    role: "نخبة من الفنيين والعمال",
+    image: workerImg,
+  },
+  {
+    name: "فريق السلامة",
+    role: "أخصائيي الأمن والسلامة",
+    image: workerImg2,
+  },
+];
 
 export default function Team() {
-  const { t } = useLanguage();
-
-  const team = [
-    {
-      name: t.language === 'ar' ? "م. أحمد العتيبي" : "Eng. Ahmed Al-Otaibi",
-      role: t.team.roles.manager,
-      image: engineerImg,
-    },
-    {
-      name: t.team.roles.field,
-      role: "",
-      image: workerImg,
-    },
-    {
-      name: t.team.roles.safety,
-      role: "",
-      image: workerImg2,
-    },
-  ];
-
   return (
     <section id="team" className="py-20 bg-background border-y border-border/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{t.team.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">فريق العمل</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            {t.team.subtitle}
+            نفتخر بكادرنا الهندسي والفني المدرب على أعلى المستويات
           </p>
         </div>
 

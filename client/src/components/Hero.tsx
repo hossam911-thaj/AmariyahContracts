@@ -2,11 +2,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import heroBg from "@assets/stock_images/modern_construction__24db5f4a.jpg";
-import { useLanguage } from "@/lib/i18n";
 
 export default function Hero() {
-  const { t, dir } = useLanguage();
-  
   return (
     <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Background Image with Overlay */}
@@ -21,14 +18,14 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="container relative z-20 px-4 text-center md:text-start flex flex-col items-center md:items-start gap-6 max-w-5xl mx-auto">
+      <div className="container relative z-20 px-4 text-center md:text-right flex flex-col items-center md:items-start gap-6 max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           <span className="inline-block px-4 py-1.5 mb-4 border border-primary/30 bg-primary/10 text-primary rounded-full text-sm font-bold tracking-wider backdrop-blur-sm">
-            {t.hero.badge}
+            رؤية المستقبل، نبنيها اليوم
           </span>
         </motion.div>
 
@@ -38,10 +35,10 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight"
         >
-          {t.hero.title_prefix} <span className="text-primary">{t.hero.title_suffix}</span>
+          عمارية العهود <span className="text-primary">التجارية</span>
           <br />
           <span className="text-2xl md:text-4xl lg:text-5xl font-light text-gray-200 mt-2 block">
-            {t.hero.subtitle}
+            شريكك الموثوق في عالم المقاولات
           </span>
         </motion.h1>
 
@@ -49,9 +46,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-gray-300 text-lg md:text-xl max-w-2xl md:text-start leading-relaxed"
+          className="text-gray-300 text-lg md:text-xl max-w-2xl md:text-right leading-relaxed"
         >
-          {t.hero.description}
+          نقدم حلولاً متكاملة في مجال البناء والتشييد بأعلى معايير الجودة والسلامة.
+          نحول رؤيتكم إلى واقع ملموس بأيدي أمهر المهندسين والعمال.
         </motion.p>
 
         <motion.div
@@ -61,10 +59,10 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 mt-8 w-full md:w-auto"
         >
           <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg h-14 px-8 font-bold w-full sm:w-auto">
-            {t.hero.cta_primary}
+            اطلب عرض سعر
           </Button>
           <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10 text-lg h-14 px-8 font-bold w-full sm:w-auto">
-            {t.hero.cta_secondary}
+            تصفح مشاريعنا
           </Button>
         </motion.div>
       </div>
