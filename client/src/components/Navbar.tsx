@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@assets/عمارية_العهود_(2)_1764834256699.png";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,13 +20,17 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "الرئيسية", href: "#hero" },
-    { name: "من نحن", href: "#about" },
-    { name: "خدماتنا", href: "#services" },
-    { name: "مشاريعنا", href: "#projects" },
-    { name: "فريق العمل", href: "#team" },
-    { name: "اتصل بنا", href: "#contact" },
+    { name: t('nav_home'), href: "#hero" },
+    { name: t('nav_about'), href: "#about" },
+    { name: t('nav_services'), href: "#services" },
+    { name: t('nav_projects'), href: "#projects" },
+    { name: t('nav_team'), href: "#team" },
+    { name: t('nav_contact'), href: "#contact" },
   ];
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'ar' ? 'en' : 'ar');
+  };
 
   return (
     <nav
@@ -55,23 +61,44 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA Button */}
-        <div className="hidden md:block">
+        {/* Actions */}
+        <div className="hidden md:flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleLanguage}
+            className="text-foreground hover:text-primary transition-colors gap-2"
+          >
+            <Globe className="h-4 w-4" />
+            <span className="font-bold">{language === 'ar' ? 'English' : 'العربية'}</span>
+          </Button>
+
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2" asChild>
             <a href="#contact">
               <Phone className="h-4 w-4" />
-              تواصل معنا
+              {t('nav_cta')}
             </a>
           </Button>
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
+        <div className="md:hidden flex items-center gap-4">
+           <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleLanguage}
+            className="text-foreground hover:text-primary transition-colors"
+          >
+            <Globe className="h-5 w-5" />
+          </Button>
+          
+          <button
+            className="text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -88,7 +115,7 @@ export default function Navbar() {
             </a>
           ))}
           <Button className="w-full mt-4" asChild>
-            <a href="#contact">تواصل معنا</a>
+            <a href="#contact">{t('nav_cta')}</a>
           </Button>
         </div>
       )}
