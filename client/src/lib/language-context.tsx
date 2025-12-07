@@ -19,6 +19,7 @@ const translations: Record<string, Record<string, string>> = {
     nav_team: "فريق العمل",
     nav_contact: "اتصل بنا",
     nav_cta: "تواصل معنا",
+    nav_download_profile: "تحميل البروفايل",
     
     // Hero
     hero_badge: "رؤية المستقبل، نبنيها اليوم",
@@ -117,6 +118,7 @@ const translations: Record<string, Record<string, string>> = {
     nav_team: "Team",
     nav_contact: "Contact",
     nav_cta: "Contact Us",
+    nav_download_profile: "Download Profile",
 
     // Hero
     hero_badge: "Building the Future Today",

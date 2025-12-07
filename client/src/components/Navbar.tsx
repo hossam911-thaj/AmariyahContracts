@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { Menu, X, Phone, Globe } from "lucide-react";
+import { Menu, X, Phone, Globe, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@assets/عمارية_العهود_(2)_1764834256699.png";
 import { useLanguage } from "@/lib/language-context";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
@@ -30,6 +33,49 @@ export default function Navbar() {
 
   const toggleLanguage = () => {
     setLanguage(language === 'ar' ? 'en' : 'ar');
+  };
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      const element = document.body;
+      const canvas = await html2canvas(element, {
+        scale: 2, // Higher resolution
+        useCORS: true, // For cross-origin images
+        logging: false,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save("Amariah-Al-Ohood-Profile.pdf");
+    } catch (error) {
+      console.error("PDF Generation Error:", error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
   };
 
   return (
@@ -73,6 +119,21 @@ export default function Navbar() {
             <span className="font-bold">{language === 'ar' ? 'English' : 'العربية'}</span>
           </Button>
 
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDownloadPDF}
+            disabled={isGeneratingPDF}
+            className="border-primary/50 text-foreground hover:bg-primary/10 gap-2 hidden lg:flex"
+          >
+            {isGeneratingPDF ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            {t('nav_download_profile')}
+          </Button>
+
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2" asChild>
             <a href="#contact">
               <Phone className="h-4 w-4" />
@@ -114,7 +175,20 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          <Button className="w-full mt-4" asChild>
+          <Button 
+            variant="outline" 
+            className="w-full mt-2 border-primary/50" 
+            onClick={handleDownloadPDF}
+            disabled={isGeneratingPDF}
+          >
+            {isGeneratingPDF ? (
+              <Loader2 className="h-4 w-4 animate-spin ml-2" />
+            ) : (
+              <Download className="h-4 w-4 ml-2" />
+            )}
+            {t('nav_download_profile')}
+          </Button>
+          <Button className="w-full mt-2" asChild>
             <a href="#contact">{t('nav_cta')}</a>
           </Button>
         </div>
