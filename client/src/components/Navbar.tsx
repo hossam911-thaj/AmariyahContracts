@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "wouter";
 import { Menu, X, Phone, Globe, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@assets/عمارية_العهود_(2)_1764834256699.png";
 import { useLanguage } from "@/lib/language-context";
+import { generateCompanyProfile } from "@/lib/pdf-generator";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,73 +38,7 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     
     try {
-      // Dynamically import for better code splitting
-      const html2canvas = (await import("html2canvas")).default;
-      const { jsPDF } = await import("jspdf");
-
-      // Wait for images to fully load
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Get the main content element
-      const element = document.querySelector("main");
-      if (!element) {
-        throw new Error("Main element not found");
-      }
-
-      // Scroll to top first
-      window.scrollTo(0, 0);
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // Create canvas from the page
-      const canvas = await html2canvas(element as HTMLElement, {
-        scale: 1.5,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        backgroundColor: "#0a0a0b",
-        imageTimeout: 15000,
-        onclone: (clonedDoc) => {
-          // Hide navbar in PDF
-          const nav = clonedDoc.querySelector("nav");
-          if (nav) nav.style.display = "none";
-        }
-      });
-
-      // Create PDF
-      const imgData = canvas.toDataURL("image/jpeg", 0.9);
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-      
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      // Add first page
-      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
-
-      // Add remaining pages
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pdfHeight;
-      }
-
-      // Save the PDF
-      const fileName = language === 'ar' 
-        ? 'بروفايل-عمارية-العهود-التجارية.pdf'
-        : 'Amariah-Al-Ohood-Profile.pdf';
-      
-      pdf.save(fileName);
-
+      await generateCompanyProfile({ language });
     } catch (error) {
       console.error("PDF Generation Error:", error);
       alert(language === 'ar' 
