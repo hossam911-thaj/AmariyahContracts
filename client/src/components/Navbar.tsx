@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
 import { Menu, X, Phone, Globe, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@assets/عمارية_العهود_(2)_1764834256699.png";
 import { useLanguage } from "@/lib/language-context";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,48 +33,87 @@ export default function Navbar() {
     setLanguage(language === 'ar' ? 'en' : 'ar');
   };
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDF = useCallback(async () => {
     setIsGeneratingPDF(true);
+    setMobileMenuOpen(false);
+    
     try {
-      const element = document.body;
-      const canvas = await html2canvas(element, {
-        scale: 2, // Higher resolution
-        useCORS: true, // For cross-origin images
+      // Dynamically import for better code splitting
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+
+      // Wait for images to fully load
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Get the main content element
+      const element = document.querySelector("main");
+      if (!element) {
+        throw new Error("Main element not found");
+      }
+
+      // Scroll to top first
+      window.scrollTo(0, 0);
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // Create canvas from the page
+      const canvas = await html2canvas(element as HTMLElement, {
+        scale: 1.5,
+        useCORS: true,
+        allowTaint: true,
         logging: false,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight
+        backgroundColor: "#0a0a0b",
+        imageTimeout: 15000,
+        onclone: (clonedDoc) => {
+          // Hide navbar in PDF
+          const nav = clonedDoc.querySelector("nav");
+          if (nav) nav.style.display = "none";
+        }
       });
 
-      const imgData = canvas.toDataURL("image/png");
+      // Create PDF
+      const imgData = canvas.toDataURL("image/jpeg", 0.9);
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
         format: "a4",
       });
 
-      const imgWidth = 210; // A4 width in mm
-      const pageHeight = 297; // A4 height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      // Add first page
+      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
 
-      while (heightLeft >= 0) {
+      // Add remaining pages
+      while (heightLeft > 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
       }
 
-      pdf.save("Amariah-Al-Ohood-Profile.pdf");
+      // Save the PDF
+      const fileName = language === 'ar' 
+        ? 'بروفايل-عمارية-العهود-التجارية.pdf'
+        : 'Amariah-Al-Ohood-Profile.pdf';
+      
+      pdf.save(fileName);
+
     } catch (error) {
       console.error("PDF Generation Error:", error);
+      alert(language === 'ar' 
+        ? 'حدث خطأ أثناء إنشاء الملف. حاول مرة أخرى.'
+        : 'An error occurred while generating the PDF. Please try again.');
     } finally {
       setIsGeneratingPDF(false);
     }
-  };
+  }, [language]);
 
   return (
     <nav
