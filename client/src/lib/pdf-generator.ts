@@ -2,7 +2,12 @@ import { jsPDF } from "jspdf";
 
 interface PDFGeneratorOptions {
   language: 'ar' | 'en';
-  logoBase64?: string;
+}
+
+// Load font dynamically
+async function loadAmiriFont(): Promise<string> {
+  const response = await fetch('/amiri-font.txt');
+  return await response.text();
 }
 
 export async function generateCompanyProfile(options: PDFGeneratorOptions): Promise<void> {
@@ -15,19 +20,38 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
     format: "a4",
   });
 
+  // Load and add Arabic font
+  try {
+    const amiriBase64 = await loadAmiriFont();
+    pdf.addFileToVFS("Amiri-Regular.ttf", amiriBase64);
+    pdf.addFont("Amiri-Regular.ttf", "Amiri", "normal");
+  } catch (error) {
+    console.error("Failed to load Arabic font:", error);
+  }
+
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   const margin = 20;
   let yPos = margin;
 
-  // Colors
+  // Colors (RGB values 0-255)
   const goldColor: [number, number, number] = [212, 175, 55];
-  const blackColor: [number, number, number] = [10, 10, 11];
-  const grayColor: [number, number, number] = [120, 120, 120];
-  const whiteColor: [number, number, number] = [255, 255, 255];
+  const darkBgColor: [number, number, number] = [15, 15, 18];
+  const cardBgColor: [number, number, number] = [30, 30, 35];
+  const grayColor: [number, number, number] = [150, 150, 150];
+  const whiteColor: [number, number, number] = [240, 240, 240];
 
   // Helper functions
-  const addText = (text: string, x: number, y: number, size: number, color: [number, number, number] = blackColor, align: 'left' | 'center' | 'right' = 'left') => {
+  const setFont = () => {
+    if (isArabic) {
+      pdf.setFont("Amiri", "normal");
+    } else {
+      pdf.setFont("helvetica", "normal");
+    }
+  };
+
+  const addText = (text: string, x: number, y: number, size: number, color: [number, number, number] = whiteColor, align: 'left' | 'center' | 'right' = 'left') => {
+    setFont();
     pdf.setFontSize(size);
     pdf.setTextColor(...color);
     pdf.text(text, x, y, { align });
@@ -45,8 +69,8 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
     return y + 15;
   };
 
-  // Page 1: Cover
-  pdf.setFillColor(...blackColor);
+  // ============ PAGE 1: COVER ============
+  pdf.setFillColor(...darkBgColor);
   pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
   // Gold accent line at top
@@ -55,7 +79,7 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
 
   // Company Name
   const companyName = isArabic ? "عمارية العهود التجارية" : "Amariah Al-Ohood Commercial";
-  addText(companyName, pageWidth / 2, 80, 28, goldColor, 'center');
+  addText(companyName, pageWidth / 2, 80, 26, goldColor, 'center');
 
   // Tagline
   const tagline = isArabic ? "شريكك الموثوق في عالم المقاولات" : "Your Trusted Partner in Contracting";
@@ -92,20 +116,26 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
     addText(stat.label, x, 180, 9, whiteColor, 'center');
   });
 
-  // Footer
+  // Location at bottom
   const location = isArabic 
     ? "المملكة العربية السعودية - جدة - حي الروضة" 
     : "Saudi Arabia - Jeddah - Al-Rawdah District";
   addText(location, pageWidth / 2, pageHeight - 30, 10, grayColor, 'center');
 
-  // Page 2: About & Services
+  // ============ PAGE 2: ABOUT & SERVICES ============
   pdf.addPage();
-  yPos = margin;
+  
+  // Background
+  pdf.setFillColor(...darkBgColor);
+  pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  // Header
+  // Header bar
   pdf.setFillColor(...goldColor);
   pdf.rect(0, 0, pageWidth, 15, 'F');
-  addText(companyName, pageWidth / 2, 10, 12, blackColor, 'center');
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(12);
+  pdf.setTextColor(15, 15, 18);
+  pdf.text(isArabic ? "Amariah Al-Ohood Commercial" : "Amariah Al-Ohood Commercial", pageWidth / 2, 10, { align: 'center' });
 
   yPos = 35;
 
@@ -117,6 +147,7 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
     ? "شركة عمارية العهود التجارية، شريكك الاستراتيجي في عالم البناء والمقاولات. نلتزم بالجودة والاحترافية في كل مشروع ننفذه. نقدم حلولاً متكاملة في مجال البناء والتشييد بأعلى معايير الجودة والسلامة."
     : "Amariah Al-Ohood Commercial Company, your strategic partner in the world of construction and contracting. We are committed to quality and professionalism in every project we execute. We provide integrated solutions in construction with the highest standards of quality and safety.";
 
+  setFont();
   pdf.setFontSize(10);
   pdf.setTextColor(...grayColor);
   const aboutLines = pdf.splitTextToSize(aboutText, pageWidth - 2 * margin);
@@ -146,27 +177,46 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
       ];
 
   services.forEach((service, i) => {
-    // Service box
-    pdf.setFillColor(30, 30, 32);
+    // Service card background
+    pdf.setFillColor(...cardBgColor);
     pdf.roundedRect(margin, yPos - 3, pageWidth - 2 * margin, 18, 2, 2, 'F');
     
-    addText(`${i + 1}. ${service.title}`, margin + 5, yPos + 4, 11, goldColor);
-    addText(service.desc, margin + 5, yPos + 11, 8, grayColor);
+    // Number circle
+    pdf.setFillColor(...goldColor);
+    pdf.circle(margin + 8, yPos + 5, 5, 'F');
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10);
+    pdf.setTextColor(15, 15, 18);
+    pdf.text(String(i + 1), margin + 8, yPos + 6.5, { align: 'center' });
+    
+    // Service title
+    addText(service.title, margin + 18, yPos + 4, 11, goldColor);
+    // Service description
+    addText(service.desc, margin + 18, yPos + 11, 8, grayColor);
     yPos += 22;
 
     if (yPos > pageHeight - 40) {
       pdf.addPage();
+      pdf.setFillColor(...darkBgColor);
+      pdf.rect(0, 0, pageWidth, pageHeight, 'F');
       yPos = 30;
     }
   });
 
-  // Page 3: Projects & Contact
+  // ============ PAGE 3: PROJECTS & CONTACT ============
   pdf.addPage();
   
-  // Header
+  // Background
+  pdf.setFillColor(...darkBgColor);
+  pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+
+  // Header bar
   pdf.setFillColor(...goldColor);
   pdf.rect(0, 0, pageWidth, 15, 'F');
-  addText(companyName, pageWidth / 2, 10, 12, blackColor, 'center');
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(12);
+  pdf.setTextColor(15, 15, 18);
+  pdf.text("Amariah Al-Ohood Commercial", pageWidth / 2, 10, { align: 'center' });
 
   yPos = 35;
 
@@ -186,13 +236,21 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
         { title: "Al-Rawabi Palace", location: "Al-Khobar, Al-Rawabi District", type: "Luxury Residential" }
       ];
 
-  projects.forEach((project) => {
-    pdf.setFillColor(30, 30, 32);
-    pdf.roundedRect(margin, yPos - 3, pageWidth - 2 * margin, 20, 2, 2, 'F');
+  projects.forEach((project, i) => {
+    pdf.setFillColor(...cardBgColor);
+    pdf.roundedRect(margin, yPos - 3, pageWidth - 2 * margin, 22, 2, 2, 'F');
     
-    addText(project.title, margin + 5, yPos + 5, 12, whiteColor);
-    addText(`${project.location} | ${project.type}`, margin + 5, yPos + 13, 9, grayColor);
-    yPos += 25;
+    // Project number
+    pdf.setFillColor(...goldColor);
+    pdf.circle(margin + 8, yPos + 6, 5, 'F');
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10);
+    pdf.setTextColor(15, 15, 18);
+    pdf.text(String(i + 1), margin + 8, yPos + 7.5, { align: 'center' });
+    
+    addText(project.title, margin + 18, yPos + 5, 12, whiteColor);
+    addText(`${project.location}  |  ${project.type}`, margin + 18, yPos + 14, 9, grayColor);
+    yPos += 28;
   });
 
   yPos += 15;
@@ -201,8 +259,8 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
   const contactTitle = isArabic ? "تواصل معنا" : "Contact Us";
   yPos = addSection(contactTitle, yPos);
 
-  pdf.setFillColor(30, 30, 32);
-  pdf.roundedRect(margin, yPos - 3, pageWidth - 2 * margin, 55, 2, 2, 'F');
+  pdf.setFillColor(...cardBgColor);
+  pdf.roundedRect(margin, yPos - 3, pageWidth - 2 * margin, 60, 3, 3, 'F');
 
   const contactInfo = isArabic
     ? [
@@ -219,8 +277,8 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
       ];
 
   contactInfo.forEach((info, i) => {
-    addText(info.label, margin + 5, yPos + 5 + i * 12, 10, goldColor);
-    addText(info.value, margin + 45, yPos + 5 + i * 12, 10, whiteColor);
+    addText(info.label, margin + 8, yPos + 8 + i * 13, 10, goldColor);
+    addText(info.value, margin + 50, yPos + 8 + i * 13, 10, whiteColor);
   });
 
   // Footer on last page
@@ -228,13 +286,16 @@ export async function generateCompanyProfile(options: PDFGeneratorOptions): Prom
   pdf.rect(0, pageHeight - 20, pageWidth, 20, 'F');
   
   const footerText = isArabic 
-    ? `© ${new Date().getFullYear()} شركة عمارية العهود التجارية. جميع الحقوق محفوظة.`
+    ? `© ${new Date().getFullYear()} Amariah Al-Ohood Commercial. All rights reserved.`
     : `© ${new Date().getFullYear()} Amariah Al-Ohood Commercial. All rights reserved.`;
-  addText(footerText, pageWidth / 2, pageHeight - 10, 9, blackColor, 'center');
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(9);
+  pdf.setTextColor(15, 15, 18);
+  pdf.text(footerText, pageWidth / 2, pageHeight - 10, { align: 'center' });
 
-  // Save
+  // Save PDF
   const fileName = isArabic 
-    ? 'بروفايل-عمارية-العهود-التجارية.pdf'
+    ? 'Amariah-Al-Ohood-Profile-AR.pdf'
     : 'Amariah-Al-Ohood-Profile.pdf';
   
   pdf.save(fileName);
