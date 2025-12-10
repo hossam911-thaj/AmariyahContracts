@@ -51,7 +51,8 @@
   --popover-foreground: 45 20% 96%;
 
   /* Primary Gold Color (from Logo Vibe) */
-  --primary: 38 65% 55%; /* Gold/Bronze */
+  /* Primary Gold Color (from Logo Vibe) - updated to #d8ae5e */
+  --primary: 39 61% 61%; /* #d8ae5e */
   --primary-foreground: 240 10% 4%; /* Black text on gold */
 
   /* Secondary - Darker Gold or Muted Grey */
@@ -61,7 +62,7 @@
   --muted: 240 6% 15%;
   --muted-foreground: 240 5% 65%;
 
-  --accent: 38 65% 55%;
+  --accent: 39 61% 61%;
   --accent-foreground: 240 10% 4%;
 
   --destructive: 0 62% 30%;
@@ -69,15 +70,15 @@
 
   --border: 240 6% 20%; /* Subtle borders */
   --input: 240 6% 20%;
-  --ring: 38 65% 55%; /* Gold ring focus */
+  --ring: 39 61% 61%; /* Gold ring focus */
 
   --radius: 0.25rem; /* Sharp corners for construction feel */
 
-  --chart-1: 38 65% 55%;
+  --chart-1: 39 61% 61%;
   --chart-2: 240 10% 25%;
   --chart-3: 240 10% 35%;
-  --chart-4: 38 50% 45%;
-  --chart-5: 38 40% 35%;
+  --chart-4: 39 50% 45%;
+  --chart-5: 39 40% 35%;
 }
 
 @layer base {
