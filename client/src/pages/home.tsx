@@ -2,7 +2,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
-import Team from "@/components/Team";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -63,7 +62,6 @@ export default function Home() {
         </section>
 
         <Projects />
-        <Team />
         <Contact />
       </main>
 

@@ -16,7 +16,6 @@ const translations: Record<string, Record<string, string>> = {
     nav_about: "من نحن",
     nav_services: "خدماتنا",
     nav_projects: "مشاريعنا",
-    nav_team: "فريق العمل",
     nav_contact: "اتصل بنا",
     nav_cta: "تواصل معنا",
     nav_download_profile: "تحميل البروفايل",
@@ -69,16 +68,6 @@ const translations: Record<string, Record<string, string>> = {
     project_3_loc: "الخبر، حي الروابي",
     project_3_cat: "سكني فاخر",
     
-    // Team
-    team_title: "فريق العمل",
-    team_desc: "نفتخر بكادرنا الهندسي والفني المدرب على أعلى المستويات",
-    team_member_1_name: "م. أحمد العتيبي",
-    team_member_1_role: "مدير المشاريع",
-    team_member_2_name: "فريق العمل الميداني",
-    team_member_2_role: "نخبة من الفنيين والعمال",
-    team_member_3_name: "فريق السلامة",
-    team_member_3_role: "أخصائيي الأمن والسلامة",
-    
     // Contact
     contact_title: "تواصل معنا",
     contact_desc: "نحن هنا للإجابة على استفساراتكم ومناقشة مشاريعكم القادمة. لا تتردد في التواصل معنا للحصول على استشارة مجانية.",
@@ -112,10 +101,9 @@ const translations: Record<string, Record<string, string>> = {
   en: {
     // Nav
     nav_home: "Home",
-    nav_about: "About Us",
+    nav_about: "About",
     nav_services: "Services",
     nav_projects: "Projects",
-    nav_team: "Team",
     nav_contact: "Contact",
     nav_cta: "Contact Us",
     nav_download_profile: "Download Profile",
@@ -167,16 +155,6 @@ const translations: Record<string, Record<string, string>> = {
     project_3_title: "Al-Rawabi Palace",
     project_3_loc: "Al-Khobar, Al-Rawabi District",
     project_3_cat: "Luxury Residential",
-
-    // Team
-    team_title: "Our Team",
-    team_desc: "We are proud of our highly trained engineering and technical cadre",
-    team_member_1_name: "Eng. Ahmed Al-Otaibi",
-    team_member_1_role: "Project Manager",
-    team_member_2_name: "Field Team",
-    team_member_2_role: "Elite Technicians & Workers",
-    team_member_3_name: "Safety Team",
-    team_member_3_role: "Security & Safety Specialists",
 
     // Contact
     contact_title: "Contact Us",

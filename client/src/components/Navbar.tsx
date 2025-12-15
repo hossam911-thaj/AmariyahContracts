@@ -25,7 +25,6 @@ export default function Navbar() {
     { name: t('nav_about'), href: "#about" },
     { name: t('nav_services'), href: "#services" },
     { name: t('nav_projects'), href: "#projects" },
-    { name: t('nav_team'), href: "#team" },
     { name: t('nav_contact'), href: "#contact" },
   ];
 
