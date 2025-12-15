@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import { Menu, X, Phone, Globe, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import logo from "@assets/image_1765104432857.png";
 import { useLanguage } from "@/lib/language-context";
 import { generateCompanyProfile } from "@/lib/pdf-generator";
 
@@ -60,11 +59,9 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <img 
-            src={logo} 
-            alt="عمارية العهود" 
-            className="h-12 w-auto object-contain transition-all duration-300 hover:scale-105" 
-          />
+          <div className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors">
+            عمارية العهود
+          </div>
         </div>
 
         {/* Desktop Nav */}

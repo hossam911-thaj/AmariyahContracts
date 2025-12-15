@@ -1,4 +1,3 @@
-import logo from "@assets/image_1765104432857.png";
 import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
@@ -11,7 +10,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <img src={logo} alt="عمارية العهود" className="h-16 w-auto object-contain mb-6 opacity-90 hover:opacity-100 transition-opacity duration-300" />
+            <div className="text-3xl font-bold text-white mb-6 hover:text-primary transition-colors duration-300">
+              عمارية العهود
+            </div>
             <p className="text-gray-400 text-lg leading-relaxed max-w-md mb-6">
               {t('footer_desc')}
             </p>
