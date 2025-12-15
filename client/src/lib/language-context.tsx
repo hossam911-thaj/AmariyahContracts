@@ -23,7 +23,7 @@ const translations: Record<string, Record<string, string>> = {
     // Hero
     hero_badge: "رؤية المستقبل، نبنيها اليوم",
     hero_title_1: "عمارية العهود",
-    hero_title_highlight: "التجارية",
+    hero_title_highlight: "للمقاولات",
     hero_subtitle: "شريكك الموثوق في عالم المقاولات",
     hero_desc: "نقدم حلولاً متكاملة في مجال البناء والتشييد بأعلى معايير الجودة والسلامة. نحول رؤيتكم إلى واقع ملموس بأيدي أمهر المهندسين والعمال.",
     hero_btn_quote: "اطلب عرض سعر",
@@ -31,8 +31,8 @@ const translations: Record<string, Record<string, string>> = {
     
     // Stats
     stats_exp: "سنوات خبرة تضمن الجودة",
-    stats_projects: "مشروع مكتمل",
-    stats_engineers: "مهندس خبير",
+    stats_projects: "مشاريع مكتملة",
+    stats_engineers: "مهندسين خبراء",
     stats_satisfaction: "رضا العملاء",
     
     // Services
