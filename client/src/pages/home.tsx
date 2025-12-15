@@ -23,21 +23,18 @@ export default function Home() {
         <section className="py-12 bg-primary border-y border-primary-foreground/10 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-multiply"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               <div className="space-y-2">
-                <p className="text-black font-bold text-2xl md:text-3xl leading-tight">{t('stats_exp')}</p>
+                <p className="text-black font-bold text-xl md:text-2xl leading-tight">{t('stats_exp')}</p>
               </div>
               <div className="space-y-2">
-                <h3 className="text-4xl md:text-5xl font-bold text-black">+200</h3>
-                <p className="text-black/80 font-medium text-lg">{t('stats_projects')}</p>
+                <p className="text-black font-bold text-xl md:text-2xl leading-tight">{t('stats_projects')}</p>
               </div>
               <div className="space-y-2">
-                <h3 className="text-4xl md:text-5xl font-bold text-black">+50</h3>
-                <p className="text-black/80 font-medium text-lg">{t('stats_engineers')}</p>
+                <p className="text-black font-bold text-xl md:text-2xl leading-tight">{t('stats_engineers')}</p>
               </div>
               <div className="space-y-2">
-                <h3 className="text-4xl md:text-5xl font-bold text-black">100%</h3>
-                <p className="text-black/80 font-medium text-lg">{t('stats_satisfaction')}</p>
+                <p className="text-black font-bold text-xl md:text-2xl leading-tight">{t('stats_satisfaction')}</p>
               </div>
             </div>
           </div>
