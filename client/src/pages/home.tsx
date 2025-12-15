@@ -25,8 +25,7 @@ export default function Home() {
           <div className="container mx-auto px-4 relative z-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               <div className="space-y-2">
-                <h3 className="text-4xl md:text-5xl font-bold text-black">+15</h3>
-                <p className="text-black/80 font-medium text-lg">{t('stats_exp')}</p>
+                <p className="text-black font-bold text-2xl md:text-3xl leading-tight">{t('stats_exp')}</p>
               </div>
               <div className="space-y-2">
                 <h3 className="text-4xl md:text-5xl font-bold text-black">+200</h3>

@@ -30,7 +30,7 @@ const translations: Record<string, Record<string, string>> = {
     hero_btn_projects: "تصفح مشاريعنا",
     
     // Stats
-    stats_exp: "سنة خبرة",
+    stats_exp: "سنوات خبرة تضمن الجودة",
     stats_projects: "مشروع مكتمل",
     stats_engineers: "مهندس خبير",
     stats_satisfaction: "رضا العملاء",
@@ -118,7 +118,7 @@ const translations: Record<string, Record<string, string>> = {
     hero_btn_projects: "Browse Projects",
 
     // Stats
-    stats_exp: "Years Experience",
+    stats_exp: "Years of Experience Guarantee Quality",
     stats_projects: "Completed Projects",
     stats_engineers: "Expert Engineers",
     stats_satisfaction: "Client Satisfaction",
